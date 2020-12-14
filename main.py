@@ -2,16 +2,16 @@ from selenium import webdriver
 import time
 import json
 import datetime
-import creds
-import mail
+import creds # just a module with all passwords and usernames stored as variables
+import mail # module that sends email containing function main.
 
 with open("dataleft.json") as f: # getjson
     jsonrecieve = json.load(f)
     print("jsonrecieve: " + str(jsonrecieve))
 
-driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")  # Optional argument, if not specified will search path.
+driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
 driver.get('https://www.giffgaff.com/auth/login?redirect=%2Fdashboard')
-time.sleep(5) # Let the user actually see something!
+time.sleep(5) 
 
 def login():
     time.sleep(2)
@@ -32,7 +32,7 @@ def getdataleft():
     dataleft = driver.find_element_by_css_selector("#balance-content > div.row-fluid.dasboard-goodybag-section > div:nth-child(1) > div > div:nth-child(1) > div.goodybag-container.clearfix > div.pull-left.goodybag-container-right-column > div:nth-child(1) > div > div.progressbar-label").text
     return dataleft
 
-def parse():
+def parse(): # gets rid of other data
     dataleft = getdataleft()
     dataleft = dataleft[0:3]
     print("dataleft: " + dataleft)
@@ -40,7 +40,7 @@ def parse():
 
 dataleft = parse()
 
-def sendemail():
+def sendemail(): # sends email if called by updatedict()
     print("\n\nsendemail")
     Recipient = creds.email
     Subject = "Mobile Data Checkup"
@@ -48,7 +48,7 @@ def sendemail():
     mail.main(Subject, Contents, Recipient)
     print("\n\n")
 
-def updatedict():
+def updatedict(): # if it has been a week since last email, sends email to me with data left
     jsonrecieve["dataleft"] = dataleft
 
     lastdate = int(jsonrecieve["lastdate"])
