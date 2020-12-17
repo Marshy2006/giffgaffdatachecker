@@ -1,0 +1,2 @@
+# add next line to bottom of crontab to run every day at 3. change path to trigger.sh
+0 3 * * * bash /home/pi/Py/webscrape/trigger.sh
